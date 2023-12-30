@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "letitrain",
+	"version": "${version}",
+	"name": "letitrain",
+	"description": "Keep the weather when sleeping",
+	"authors": [
+		"UnknownUser"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/letitrain/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+		  "net.unknownuser.letitrain.LetItRain"
+		],
+		"client": []
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.15.3",
+		"minecraft": "1.20.x",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {}
+}
