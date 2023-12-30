@@ -57,6 +57,7 @@ public class LetItRain implements ModInitializer {
 	}
 
 	protected void registerCommandHandler() {
+		// https://github.com/Lucaslah/WeatherChanger/blob/main/src/main/java/me/lucaslah/weatherchanger/WeatherChanger.java
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(literal("sleepweather")
 				.then(literal("keep")
 				.executes(context -> {
