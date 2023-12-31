@@ -4,7 +4,9 @@ A Minecraft Fabric mod, which keeps the weather when sleeping.
 
 ## Toggling
 
-`/sleepweather <keep | reset>` to enable or disable keeping the weather. `keep` by default.
+`/sleepweather <keep | reset | set [percent]>` to enable or disable keeping the weather.
+
+The chance to keep the weather is 100% by default
 
 ## Versions
 
