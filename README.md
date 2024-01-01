@@ -1,5 +1,7 @@
 # Let It Rain
 
+[![Modrinth](https://img.shields.io/modrinth/dt/eQOTUNkk?label=Modrinth&logo=modrinth)](https://modrinth.com/mod/letitrain)
+
 A Minecraft Fabric mod, which keeps the weather when sleeping.
 
 This is a modern and fabric version of [Yermolim's Keep The Rain](https://github.com/yermolim/keep-the-rain).
