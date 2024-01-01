@@ -8,39 +8,42 @@ import net.minecraft.util.math.*;
 import java.io.*;
 
 public class Config {
-	private static Config INSTANCE = null;
+	public static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("let-it-rain.json").toFile();
+	private static final Config INSTANCE = getConfigFromFile();
 
-	public static final int ALWAYS_RESTORE = 100;
-	public static final int NEVER_RESTORE = 0;
+	public static final int ALWAYS_KEEP = 100;
+	public static final int NEVER_KEEP = 0;
 
 	private Config() {
-		keepWeatherChance = ALWAYS_RESTORE;
+		keepRainChance = ALWAYS_KEEP;
+		keepThunderChance = ALWAYS_KEEP;
+		preserveWeatherTime = true;
+		logRolls = true;
 	}
 
 	@Expose
-	protected int keepWeatherChance;
+	protected int keepRainChance;
+	@Expose
+	protected int keepThunderChance;
+	@Expose
+	protected boolean preserveWeatherTime;
+	@Expose
+	protected boolean logRolls;
 
-	public int getKeepWeatherChance() {
-		return keepWeatherChance;
+	public static int keepRainChance() {
+		return INSTANCE.keepRainChance;
 	}
 
-	public void setKeepWeatherChance(int keepWeatherChance) {
-		this.keepWeatherChance = MathHelper.clamp(keepWeatherChance, NEVER_RESTORE, ALWAYS_RESTORE);
-		writeConfig();
+	public static int keepThunderChance() {
+		return INSTANCE.keepThunderChance;
 	}
 
-	public boolean isEnabled() {
-		return getKeepWeatherChance() != NEVER_RESTORE;
+	public static boolean preserveWeatherTime() {
+		return INSTANCE.preserveWeatherTime;
 	}
 
-	public static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("let-it-rain.json").toFile();
-
-	public static Config getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = getConfigFromFile();
-		}
-
-		return INSTANCE;
+	public static boolean logRolls() {
+		return INSTANCE.logRolls;
 	}
 
 	protected static Config getConfigFromFile() {
@@ -50,6 +53,7 @@ public class Config {
 			// Gson uses setters
 			// no verification needed, if already in setters
 			cfg = loadConfig();
+			cfg.verify();
 		} else {
 			LetItRain.LOGGER.info("config file is missing, creating default");
 			cfg = new Config();
@@ -59,13 +63,15 @@ public class Config {
 		return cfg;
 	}
 
+	// The config file has to exist.
 	protected static Config loadConfig() {
 		Gson gson = new Gson();
 		try (FileReader reader = new FileReader(CONFIG_FILE)) {
 			return gson.fromJson(reader, Config.class);
 		} catch (IOException e) {
 			LetItRain.LOGGER.error("Could not read config file! Reason: %s", e);
-			throw new RuntimeException(e);
+			LetItRain.LOGGER.error("Using default values for settings!");
+			return new Config();
 		}
 	}
 
@@ -77,5 +83,10 @@ public class Config {
 			LetItRain.LOGGER.error("Could not write config file! Reason: %s", e);
 			throw new RuntimeException(e);
 		}
+	}
+
+	protected void verify() {
+		keepRainChance = MathHelper.clamp(keepRainChance, NEVER_KEEP, ALWAYS_KEEP);
+		keepThunderChance = MathHelper.clamp(keepThunderChance, NEVER_KEEP, ALWAYS_KEEP);
 	}
 }
