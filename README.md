@@ -2,7 +2,7 @@
 
 A Minecraft Fabric mod, which keeps the weather when sleeping.
 
-This is a modern version of [Yermolim's Keep The Rain](https://github.com/yermolim/keep-the-rain).
+This is a modern and fabric version of [Yermolim's Keep The Rain](https://github.com/yermolim/keep-the-rain).
 
 ## Toggling
 
