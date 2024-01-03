@@ -10,7 +10,7 @@ This is a modern and fabric version of [Yermolim's Keep The Rain](https://github
 
 Within the config directory is the config file `let-it-rain.json`.
 
-The chances are a %, so `100` is always restore weather, and `0` is to never restore weather.
+The chances are in %, so `100` is always, and `0` is to never restore weather.
 
 ## Versions
 
@@ -20,6 +20,6 @@ If you need another version, open an issue on [GitHub](https://github.com/Unknow
 
 ### Maintenance
 
-I'm not sure if I'll update this mod to modern versions. I'm not into modding Minecraft not am I playing it that often. Right now I'm playing with Create, which is why I'm doing this.
+I'm not sure if I'll update this mod to modern versions. I'm not into modding Minecraft, nor am I playing it that often. Right now I'm playing with Create, which is why I'm doing this.
 
 As I said before, open a ticket, and I'll see what I can do.
