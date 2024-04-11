@@ -5,6 +5,7 @@ import net.minecraft.entity.effect.*;
 import net.minecraft.entity.player.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
+import net.unknownuser.beaconrange.*;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
@@ -19,7 +20,7 @@ public class BeaconMixin {
 		ci.cancel();
 		
 		if (!world.isClient && primaryEffect != null) {
-			double range           = (beaconLevel * 100);
+			double range           = (beaconLevel * Config.rangePerLevel()) + Config.baseOffset();
 			int    effectAmplifier = 0;
 			if (beaconLevel >= 4 && primaryEffect == secondaryEffect) {
 				effectAmplifier = 1;
