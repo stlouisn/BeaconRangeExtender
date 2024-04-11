@@ -10,8 +10,8 @@ public class Config implements Serializable {
 	public static class Defaults {
 		private Defaults() {}
 
-		public static final int RANGE_PER_LEVEL = 100;
-		public static final int BASE_OFFSET = 0;
+		public static final int RANGE_PER_LEVEL = 10;
+		public static final int BASE_OFFSET = 10;
 
 		private static Config config() {
 			return new Config(
