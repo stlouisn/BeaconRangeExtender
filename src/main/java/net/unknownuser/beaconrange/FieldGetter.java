@@ -1,7 +1,6 @@
-package net.unknownuser.letitrain;
+package net.unknownuser.beaconrange;
 
 import com.google.gson.*;
-import net.minecraft.util.math.*;
 
 // utility class
 class FieldGetter {
@@ -30,18 +29,18 @@ class FieldGetter {
 		JsonElement element = get(name);
 
 		if (element == null) {
-			LetItRain.LOGGER.warn(WARN_FORMAT, name, fallback);
+			BeaconRange.LOGGER.warn(WARN_FORMAT, name, fallback);
 			return fallback;
 		}
 
-		return clampWarn(element.getAsInt(), name);
+		return element.getAsInt();
 	}
 
 	public boolean getBool(String name, boolean fallback) {
 		JsonElement element = get(name);
 
 		if (element == null) {
-			LetItRain.LOGGER.warn(WARN_FORMAT, name, fallback);
+			BeaconRange.LOGGER.warn(WARN_FORMAT, name, fallback);
 			return fallback;
 		}
 
@@ -50,16 +49,5 @@ class FieldGetter {
 
 	public boolean hasError() {
 		return hasError;
-	}
-
-	private int clampWarn(int value, String name) {
-		int clamped = MathHelper.clamp(value, Config.Defaults.NEVER_KEEP, Config.Defaults.ALWAYS_KEEP);
-
-		if (clamped != value) {
-			this.hasError = true;
-			LetItRain.LOGGER.info("value for {} is not in range 0-100 (is {}, using {})", name, value, clamped);
-		}
-
-		return clamped;
 	}
 }

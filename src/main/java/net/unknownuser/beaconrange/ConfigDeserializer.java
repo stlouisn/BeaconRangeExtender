@@ -1,4 +1,4 @@
-package net.unknownuser.letitrain;
+package net.unknownuser.beaconrange;
 
 import com.google.gson.*;
 
@@ -15,16 +15,12 @@ public class ConfigDeserializer implements JsonDeserializer<Config> {
 		JsonObject object = jsonElement.getAsJsonObject();
 		FieldGetter getter = new FieldGetter(object);
 
-		int keepRainChance = getter.getInt("keepRainChance", Config.Defaults.KEEP_RAIN_CHANCE);
-		int keepThunderChance = getter.getInt("keepThunderChance", Config.Defaults.KEEP_THUNDER_CHANCE);
-		boolean preserveWeatherTime = getter.getBool("preserveWeatherTime", Config.Defaults.PRESERVE_WEATHER_TIME);
-		boolean logRolls = getter.getBool("logRolls", Config.Defaults.LOG_ROLLS);
+		int rangePerLevel = getter.getInt("rangePerLevel", Config.Defaults.RANGE_PER_LEVEL);
+		int baseOffset = getter.getInt("baseOffset", Config.Defaults.BASE_OFFSET);
 
 		Config config = new Config(
-				keepRainChance,
-				keepThunderChance,
-				preserveWeatherTime,
-				logRolls
+			rangePerLevel,
+			baseOffset
 		);
 
 		if (getter.hasError()) {
