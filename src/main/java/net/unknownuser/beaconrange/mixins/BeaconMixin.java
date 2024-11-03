@@ -3,6 +3,7 @@ package net.unknownuser.beaconrange.mixins;
 import net.minecraft.block.entity.*;
 import net.minecraft.entity.effect.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.*;
 import net.minecraft.world.*;
 import net.unknownuser.beaconrange.*;
@@ -15,14 +16,14 @@ import java.util.*;
 @Mixin(BeaconBlockEntity.class)
 public class BeaconMixin {
 	@Inject(at = @At("HEAD"), method = "applyPlayerEffects", cancellable = true)
-	private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, StatusEffect primaryEffect, StatusEffect secondaryEffect, CallbackInfo ci) {
+	private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, RegistryEntry<StatusEffect> primaryEffect, RegistryEntry<StatusEffect> secondaryEffect, CallbackInfo ci) {
 		// replace method entirely
 		ci.cancel();
 		
 		if (!world.isClient && primaryEffect != null) {
 			double range           = (beaconLevel * Config.rangePerLevel()) + Config.baseOffset();
 			int    effectAmplifier = 0;
-			if (beaconLevel >= 4 && primaryEffect == secondaryEffect) {
+			if (beaconLevel >= 4 && Objects.equals(primaryEffect, secondaryEffect)) {
 				effectAmplifier = 1;
 			}
 			
@@ -37,7 +38,7 @@ public class BeaconMixin {
 				playerEntity.addStatusEffect(new StatusEffectInstance(primaryEffect, effectDuration, effectAmplifier, true, true));
 			}
 			
-			if (beaconLevel >= 4 && primaryEffect != secondaryEffect && secondaryEffect != null) {
+			if (beaconLevel >= 4 && !Objects.equals(primaryEffect, secondaryEffect) && secondaryEffect != null) {
 				playerIterator = players.iterator();
 				
 				while (playerIterator.hasNext()) {
