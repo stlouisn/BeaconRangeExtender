@@ -15,38 +15,45 @@ import java.util.*;
 
 @Mixin(BeaconBlockEntity.class)
 public class BeaconMixin {
-	@Inject(at = @At("HEAD"), method = "applyPlayerEffects", cancellable = true)
-	private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, RegistryEntry<StatusEffect> primaryEffect, RegistryEntry<StatusEffect> secondaryEffect, CallbackInfo ci) {
-		// replace method entirely
-		ci.cancel();
-		
-		if (!world.isClient && primaryEffect != null) {
-			double range           = (beaconLevel * Config.rangePerLevel()) + Config.baseOffset();
-			int    effectAmplifier = 0;
-			if (beaconLevel >= 4 && Objects.equals(primaryEffect, secondaryEffect)) {
-				effectAmplifier = 1;
-			}
-			
-			int                    effectDuration = (9 + beaconLevel * 2) * 20;
-			Box                    rangeBox       = new Box(pos).expand(range).stretch(0.0, world.getHeight(), 0.0);
-			List<PlayerEntity>     players        = world.getNonSpectatingEntities(PlayerEntity.class, rangeBox);
-			Iterator<PlayerEntity> playerIterator = players.iterator();
-			
-			PlayerEntity playerEntity;
-			while (playerIterator.hasNext()) {
-				playerEntity = playerIterator.next();
-				playerEntity.addStatusEffect(new StatusEffectInstance(primaryEffect, effectDuration, effectAmplifier, true, true));
-			}
-			
-			if (beaconLevel >= 4 && !Objects.equals(primaryEffect, secondaryEffect) && secondaryEffect != null) {
-				playerIterator = players.iterator();
-				
-				while (playerIterator.hasNext()) {
-					playerEntity = playerIterator.next();
-					playerEntity.addStatusEffect(new StatusEffectInstance(secondaryEffect, effectDuration, 0, true, true));
-				}
-			}
-			
-		}
-	}
+
+  @Inject(at = @At("HEAD"), method = "applyPlayerEffects", cancellable = true)
+  private static void applyPlayerEffects(World world, BlockPos pos, int beaconLevel, RegistryEntry < StatusEffect > primaryEffect, RegistryEntry < StatusEffect > secondaryEffect, CallbackInfo ci) {
+
+    // replace method entirely
+    ci.cancel();
+
+    if (!world.isClient && primaryEffect != null) {
+
+      double range = 10 + (beaconLevel * 10);
+      Box rangeBox = new Box(pos).expand(range).stretch(0.0, world.getHeight(), 0.0);
+
+      int effectDuration = 180 + (beaconLevel * 400);
+
+      List < PlayerEntity > players = world.getNonSpectatingEntities(PlayerEntity.class, rangeBox);
+      Iterator < PlayerEntity > playerIterator = players.iterator();
+      PlayerEntity playerEntity;
+
+      if (beaconLevel >= 4 && secondaryEffect != null) {
+        if (Objects.equals(primaryEffect, secondaryEffect)) {
+          while (playerIterator.hasNext()) {
+            playerEntity = playerIterator.next();
+            playerEntity.addStatusEffect(new StatusEffectInstance(primaryEffect, effectDuration, 1, true, true));
+          }
+        } 
+	else {
+          while (playerIterator.hasNext()) {
+            playerEntity = playerIterator.next();
+            playerEntity.addStatusEffect(new StatusEffectInstance(primaryEffect, effectDuration, 0, true, true));
+            playerEntity.addStatusEffect(new StatusEffectInstance(secondaryEffect, effectDuration, 0, true, true));
+          }
+        }
+      } 
+      else {
+        while (playerIterator.hasNext()) {
+          playerEntity = playerIterator.next();
+          playerEntity.addStatusEffect(new StatusEffectInstance(primaryEffect, effectDuration, 0, true, true));
+        }
+      }
+    }
+  }
 }
